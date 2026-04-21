@@ -835,30 +835,50 @@ function setType(k) {
 }
 
 function loadEmbed(k) {
-  var url = document.getElementById('url-'+k).value.trim();
+  let url = document.getElementById('url-' + k).value.trim();
   if (!url) return;
-  if (url.indexOf('http') !== 0) url = 'https://'+url;
-  var wrap=document.getElementById('wrap-'+k);
-  var ph=document.getElementById('ph-'+k);
-  var err=document.getElementById('err-'+k);
-  var btn=document.getElementById('obtn-'+k);
-  ph.style.display='none';
-  if(err) err.classList.remove('on');
-  if(btn) btn.onclick = function(){ window.open(url,'_blank'); };
-  var old=wrap.querySelector('iframe');
-  if(old) old.parentNode.removeChild(old);
-  var fr=document.createElement('iframe');
-  fr.setAttribute('allowfullscreen','');
-  fr.style.cssText='width:100%;height:380px;border:none;display:block;';
-  var loaded=false;
-  var to=setTimeout(function(){ if(!loaded){ fr.style.display='none'; if(err) err.classList.add('on'); } },8000);
-  fr.onload=function(){
-    loaded=true; clearTimeout(to);
-    try{ var l=fr.contentWindow.location.href; if(l==='about:blank'){ fr.style.display='none'; if(err) err.classList.add('on'); } }
-    catch(e){ fr.style.display='block'; if(err) err.classList.remove('on'); }
-  };
-  fr.onerror=function(){ clearTimeout(to); fr.style.display='none'; if(err) err.classList.add('on'); };
-  fr.src=url; wrap.appendChild(fr);
+
+  if (!url.startsWith('http')) {
+    url = 'https://' + url;
+  }
+
+  const wrap = document.getElementById('wrap-' + k);
+  const ph = document.getElementById('ph-' + k);
+
+  if (ph) ph.style.display = 'none';
+
+  // 🧠 Détection intelligente
+  const blockedSites = [
+    "replit",
+    "notion",
+    "docs.google.com",
+    "drive.google.com"
+  ];
+
+  const isBlocked = blockedSites.some(site => url.includes(site));
+
+  if (isBlocked) {
+    // 🚫 MODE EXTERNE
+    wrap.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1rem;color:#aaa;text-align:center;">
+        <div style="font-size:2rem;">🚫</div>
+        <div>Ce contenu ne peut pas être intégré</div>
+        <button onclick="window.open('${url}','_blank')" 
+          style="padding:10px 20px;background:#f5e642;border:none;cursor:pointer;">
+          Ouvrir dans un onglet ↗
+        </button>
+      </div>
+    `;
+  } else {
+    // ✅ MODE IFRAME
+    wrap.innerHTML = `
+      <iframe 
+        src="${url}" 
+        style="width:100%; height:380px; border:none;"
+        loading="lazy">
+      </iframe>
+    `;
+  }
 }
 
 function loadRessource() {
