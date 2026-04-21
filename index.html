@@ -987,6 +987,71 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
+<div id="catalog" style="display:flex;gap:10px;overflow:auto;padding:10px;"></div>
+  <script>
+let DATA = [];
 
+document.addEventListener("DOMContentLoaded", () => {
+
+  fetch('./data/content.json')
+    .then(res => res.json())
+    .then(data => {
+      DATA = data.items;
+      renderCatalog(DATA);
+      loadItem(DATA[0]); // auto premier
+    });
+
+});
+
+function renderCatalog(items) {
+  const cat = document.getElementById('catalog');
+  cat.innerHTML = '';
+
+  items.forEach((item, index) => {
+    const el = document.createElement('div');
+
+    el.style.minWidth = "200px";
+    el.style.background = "#111";
+    el.style.padding = "10px";
+    el.style.cursor = "pointer";
+    el.style.border = "1px solid #333";
+
+    el.innerHTML = `
+      <strong>${item.title}</strong><br>
+      <small>${item.type}</small>
+    `;
+
+    el.onclick = () => loadItem(item);
+
+    cat.appendChild(el);
+  });
+}
+
+function loadItem(item) {
+
+  document.getElementById('headline').innerText = item.title;
+  document.getElementById('desc').innerText = item.description;
+
+  if (item.type === "artefact") {
+    setType('a');
+    document.getElementById('url-a').value = item.url;
+    loadEmbed('a');
+  }
+
+  if (item.type === "podcast") {
+    setType('p');
+    document.getElementById('url-p').value = item.url;
+    loadPodcast();
+  }
+
+  if (item.type === "ressource") {
+    setType('r');
+    document.getElementById('url-r').value = item.url;
+    loadRessource();
+  }
+
+}
+</script>
+  
 </body>
 </html>
