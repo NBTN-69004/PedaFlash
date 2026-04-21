@@ -916,7 +916,7 @@ audio.addEventListener('ended',function(){ playing=false; document.getElementByI
 function seekAudio(e){ if(!audio.duration) return; var r=document.getElementById('progressTrack').getBoundingClientRect(); audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration; }
 function setVolume(v){ audio.volume=v; }
 function cycleSpeed(){ si=(si+1)%speeds.length; audio.playbackRate=speeds[si]; document.getElementById('speedBtn').textContent=speeds[si]+'×'; }
-</script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
   fetch('data/latest.json')
     .then(res => res.json())
