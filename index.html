@@ -6,99 +6,186 @@
 <title>Pedaflash</title>
 
 <style>
+/* ===== BASE ===== */
 body{
   margin:0;
   background:#090909;
   color:#f0ece0;
-  font-family:Arial, sans-serif;
+  font-family: 'DM Sans', Arial, sans-serif;
 }
 
-.container{
-  max-width:1000px;
+/* ===== PANEL ===== */
+.pf-panel{
+  max-width:1100px;
   margin:auto;
-  padding:20px;
+  border:1px solid #2a2a2a;
+  background:#161616;
 }
 
-h1{color:#f5e642;}
-
-.tabs{
+/* ===== HEADER ===== */
+.pf-header{
   display:flex;
-  gap:10px;
+  justify-content:space-between;
+  padding:15px;
+  border-bottom:1px solid #2a2a2a;
+}
+
+.pf-logo{
+  font-size:28px;
+  font-weight:bold;
+}
+.pf-logo span{ color:#f5e642; }
+
+/* ===== TABS ===== */
+.pf-tabs{
+  display:flex;
+  border-bottom:1px solid #2a2a2a;
+}
+
+.pf-tab{
+  padding:10px 15px;
+  cursor:pointer;
+  border-right:1px solid #2a2a2a;
+  font-size:13px;
+}
+
+.ta{ background:#f5e642; color:#000; }
+.tp{ background:#4daaff; color:#000; }
+.tr{ background:#a855f7; color:#fff; }
+.tpad{ background:#3ecf8e; color:#000; }
+
+/* ===== CONTENT ===== */
+.pf-main{
+  display:grid;
+  grid-template-columns: 1fr 260px;
+}
+
+.pf-content{ padding:20px; }
+
+.pf-headline{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.pf-desc{
+  color:#888;
   margin-bottom:20px;
 }
 
-.tab{
-  padding:10px;
-  background:#222;
-  cursor:pointer;
+/* ===== INPUT ===== */
+.pf-topbar{
+  display:flex;
+  gap:10px;
+  margin-bottom:10px;
 }
 
-.active{background:#f5e642;color:#000;}
-
-input{
-  width:70%;
+.pf-input{
+  flex:1;
   padding:10px;
   background:#111;
   border:1px solid #333;
   color:white;
 }
 
-button{
+.pf-btn{
   padding:10px;
   background:#f5e642;
   border:none;
   cursor:pointer;
 }
 
-.viewer{
-  margin-top:20px;
+/* ===== EMBED ===== */
+.pf-embed{
   height:400px;
   background:#000;
 }
 
-iframe{
-  width:100%;
-  height:100%;
-  border:none;
+iframe{ width:100%; height:100%; border:none; }
+
+/* ===== SIDEBAR ===== */
+.pf-sidebar{
+  border-left:1px solid #2a2a2a;
+  padding:20px;
+  font-size:13px;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:800px){
+  .pf-main{ grid-template-columns:1fr; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="pf-panel">
 
-<h1 id="title">Chargement...</h1>
-<p id="desc"></p>
+  <!-- HEADER -->
+  <div class="pf-header">
+    <div class="pf-logo">PEDA<span>FLASH</span></div>
+    <div id="date"></div>
+  </div>
 
-<div class="tabs">
-  <div class="tab active" onclick="setType('artefact')">Artefact</div>
-  <div class="tab" onclick="setType('podcast')">Podcast</div>
-  <div class="tab" onclick="setType('ressource')">Ressource</div>
-  <div class="tab" onclick="setType('padlet')">Padlet</div>
-</div>
+  <!-- TABS -->
+  <div class="pf-tabs">
+    <div class="pf-tab ta" id="tab-a" onclick="setType('a')">⚡ Artefact</div>
+    <div class="pf-tab" id="tab-p" onclick="setType('p')">🎧 Podcast</div>
+    <div class="pf-tab" id="tab-r" onclick="setType('r')">📖 Ressource</div>
+    <div class="pf-tab" id="tab-pad" onclick="setType('pad')">🟩 Padlet</div>
+  </div>
 
-<input id="url" placeholder="URL...">
-<button onclick="load()">Charger</button>
+  <div class="pf-main">
 
-<div class="viewer" id="viewer"></div>
+    <!-- CONTENT -->
+    <div class="pf-content">
+
+      <div class="pf-headline" id="headline">Chargement...</div>
+      <div class="pf-desc" id="desc"></div>
+
+      <div class="pf-topbar">
+        <input id="url" class="pf-input" placeholder="URL...">
+        <button class="pf-btn" onclick="loadContent()">Charger</button>
+      </div>
+
+      <div class="pf-embed" id="viewer"></div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="pf-sidebar">
+      <b>Pedaflash</b><br><br>
+      Ressource pédagogique automatisée<br>
+      Artefact / Podcast / PDF / Padlet
+    </div>
+
+  </div>
 
 </div>
 
 <script>
 
-let currentType = "artefact";
+/* ===== DATE ===== */
+document.getElementById("date").innerText =
+new Date().toLocaleDateString("fr-FR");
 
-/* 🔥 CHANGER TYPE */
-function setType(type){
-  currentType = type;
+/* ===== TYPE ===== */
+let currentType = "a";
 
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  event.target.classList.add("active");
+function setType(k){
+  currentType = k;
+
+  document.querySelectorAll(".pf-tab").forEach(t=>{
+    t.className = "pf-tab";
+  });
+
+  document.getElementById("tab-"+k).classList.add(
+    k==="a"?"ta":k==="p"?"tp":k==="r"?"tr":"tpad"
+  );
 }
 
-/* 🔥 CHARGER CONTENU */
-function load(){
+/* ===== LOAD ===== */
+function loadContent(){
+
   let url = document.getElementById("url").value.trim();
   if(!url) return;
 
@@ -109,43 +196,49 @@ function load(){
   const viewer = document.getElementById("viewer");
   viewer.innerHTML = "";
 
-  if(currentType === "podcast"){
+  // PODCAST
+  if(currentType === "p"){
     viewer.innerHTML = `<audio controls style="width:100%"><source src="${url}"></audio>`;
     return;
   }
 
-  if(currentType === "ressource"){
-    if(url.includes("docs.google.com")){
-      url = url.replace("/edit","/preview");
-    }
+  // GOOGLE DOC FIX
+  if(currentType === "r" && url.includes("docs.google.com")){
+    url = url.replace("/edit","/preview");
   }
 
   viewer.innerHTML = `<iframe src="${url}"></iframe>`;
 }
 
-/* 🚀 AUTO LOAD JSON */
+/* ===== AUTO JSON ===== */
 document.addEventListener("DOMContentLoaded", ()=>{
 
   fetch("./data/content.json")
-    .then(res=>res.json())
+    .then(r=>r.json())
     .then(data=>{
 
-      if(!data.items || data.items.length === 0) return;
+      if(!data.items || data.items.length===0) return;
 
       const item = data.items[0];
 
-      document.getElementById("title").innerText = item.title || "";
+      document.getElementById("headline").innerText = item.title || "";
       document.getElementById("desc").innerText = item.description || "";
       document.getElementById("url").value = item.url || "";
 
-      currentType = item.type;
+      // TYPE AUTO
+      const map = {
+        artefact:"a",
+        podcast:"p",
+        ressource:"r",
+        padlet:"pad"
+      };
 
-      load();
+      setType(map[item.type] || "a");
+
+      loadContent();
 
     })
-    .catch(err=>{
-      console.log("Erreur JSON", err);
-    });
+    .catch(err=>console.log(err));
 
 });
 
