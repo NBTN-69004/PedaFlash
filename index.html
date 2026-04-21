@@ -112,7 +112,7 @@ function renderCatalog(items) {
   cat.innerHTML = '';
 
   items
-  .filter(item => item.title && item.title !== "")
+  .items.filter(item => item.type && item.type.toLowerCase() !== "")
   .forEach((item) => {
     const el = document.createElement('div');
     el.style.minWidth = "200px";
