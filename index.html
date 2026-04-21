@@ -927,6 +927,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.type === "artefact") {
         document.getElementById('url-a').value = data.url;
+        loadEmbed('a');
+
       }
 
     });
