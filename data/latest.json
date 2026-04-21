@@ -1,19 +1,9 @@
 {
-  "embeds": [
+  "items": [
     {
-      "title": "⚡ PEDAFLASH",
+      "type": "{{Type}}",
+      "title": "{{Titre}}",
       "description": "{{Description}}",
-      "color": 16776960,
-      "fields": [
-        {
-          "name": "🎯 Titre",
-          "value": "{{Titre}}"
-        },
-        {
-          "name": "📂 Type",
-          "value": "{{Type}}"
-        }
-      ],
       "url": "{{URL}}"
     }
   ]
