@@ -227,6 +227,28 @@ function renderHist(){
   });
 }
 
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // 🔥 RESET AUTO
+  localStorage.removeItem('history');
+
+  // TON CODE EXISTANT
+  fetch("https://api.github.com/repos/NBTN-69004/PedaFlash/contents/data")
+    .then(res => res.json())
+    .then(files => {
+      const promises = files.map(file =>
+        fetch(file.download_url).then(r => r.json())
+      );
+
+      Promise.all(promises).then(items => {
+        renderCatalog(items);
+        loadItem(items[0]);
+      });
+    });
+
+});
 </script>
+  
 </body>
 </html>
