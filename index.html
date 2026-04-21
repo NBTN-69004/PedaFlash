@@ -111,7 +111,9 @@ function renderCatalog(items) {
   const cat = document.getElementById('catalog');
   cat.innerHTML = '';
 
-  items.forEach((item) => {
+  items
+  .filter(item => item.title && item.title !== "")
+  .forEach((item) => {
     const el = document.createElement('div');
     el.style.minWidth = "200px";
     el.style.background = "#111";
