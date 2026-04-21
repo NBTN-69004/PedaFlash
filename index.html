@@ -80,14 +80,30 @@ let fav = JSON.parse(localStorage.getItem("fav")||"[]");
 let hist = JSON.parse(localStorage.getItem("hist")||"[]");
 
 /* LOAD JSON */
-fetch("./data/content.json")
-.then(r=>r.json())
-.then(d=>{
-  DATA=d.items;
-  renderCatalog(DATA);
-  renderFav();
-  renderHist();
-  loadItem(DATA[0]);
+fetch("https://api.github.com/repos/NBTN-69004/PedaFlash/contents/data")
+.then(res => res.json())
+.then(files => {
+
+  // 🔥 garder uniquement les fichiers JSON
+  const jsonFiles = files.filter(f => f.name.endsWith(".json"));
+
+  const promises = jsonFiles.map(file =>
+    fetch(file.download_url).then(r => r.json())
+  );
+
+  Promise.all(promises).then(items => {
+
+    // 🔥 trier du plus récent au plus ancien
+    items.sort((a,b)=> b.url.localeCompare(a.url));
+
+    renderCatalog(items);
+
+    if(items.length){
+      loadItem(items[0]);
+    }
+
+  });
+
 });
 
 /* RENDER */
