@@ -222,6 +222,33 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  fetch('./data/latest.json')
+    .then(res => res.json())
+    .then(data => {
+
+      // 🔥 Texte dynamique
+      const headline = document.getElementById('headline');
+      const desc = document.getElementById('desc');
+
+      if (headline) headline.innerText = data.title;
+      if (desc) desc.innerText = data.description;
+
+      // 🔥 URL auto
+      if (data.type === "artefact") {
+        const input = document.getElementById('url-a');
+        if (input) {
+          input.value = data.url;
+
+          // 🔥 auto chargement
+          loadEmbed('a');
+        }
+      }
+
+    })
+    .catch(err => console.error("JSON error:", err));
+});
 </script>
 
 </body>
