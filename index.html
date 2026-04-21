@@ -107,11 +107,29 @@ fetch("https://api.github.com/repos/NBTN-69004/PedaFlash/contents/data")
 });
 
 /* RENDER */
-function renderCatalog(items){
-  const cat=document.getElementById("catalog");
-  cat.innerHTML="";
-  items.forEach(item=>{
-    cat.appendChild(createCard(item));
+function renderCatalog(items) {
+  const cat = document.getElementById('catalog');
+  cat.innerHTML = '';
+
+  items.forEach((item) => {
+    const el = document.createElement('div');
+    el.style.minWidth = "200px";
+    el.style.background = "#111";
+    el.style.padding = "15px";
+    el.style.cursor = "pointer";
+    el.style.border = "1px solid #333";
+
+    el.innerHTML = `
+      <h3 style="color:#f5d94f;">${item.title || "Sans titre"}</h3>
+      <p style="font-size:12px;color:#aaa;">${item.type || ""}</p>
+      <p style="font-size:13px;margin-top:10px;">
+        ${item.description || ""}
+      </p>
+    `;
+
+    el.onclick = () => loadItem(item);
+
+    cat.appendChild(el);
   });
 }
 
