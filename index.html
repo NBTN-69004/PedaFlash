@@ -6,241 +6,170 @@
 <title>Pedaflash</title>
 
 <style>
-/* ===== BASE ===== */
 body{
   margin:0;
   background:#090909;
   color:#f0ece0;
-  font-family: 'DM Sans', Arial, sans-serif;
+  font-family:Arial;
 }
 
-/* ===== PANEL ===== */
-.pf-panel{
-  max-width:1100px;
+.container{
+  max-width:1200px;
   margin:auto;
-  border:1px solid #2a2a2a;
-  background:#161616;
+  padding:20px;
 }
 
-/* ===== HEADER ===== */
-.pf-header{
+/* HEADER */
+.header{
   display:flex;
   justify-content:space-between;
-  padding:15px;
-  border-bottom:1px solid #2a2a2a;
+  margin-bottom:20px;
 }
-
-.pf-logo{
+.logo{
   font-size:28px;
-  font-weight:bold;
 }
-.pf-logo span{ color:#f5e642; }
+.logo span{color:#f5e642;}
 
-/* ===== TABS ===== */
-.pf-tabs{
+/* FILTER */
+.filters{
   display:flex;
-  border-bottom:1px solid #2a2a2a;
+  gap:10px;
+  margin-bottom:20px;
 }
-
-.pf-tab{
-  padding:10px 15px;
+.filter{
+  padding:8px 12px;
+  background:#222;
   cursor:pointer;
-  border-right:1px solid #2a2a2a;
-  font-size:13px;
 }
+.active{background:#f5e642;color:#000;}
 
-.ta{ background:#f5e642; color:#000; }
-.tp{ background:#4daaff; color:#000; }
-.tr{ background:#a855f7; color:#fff; }
-.tpad{ background:#3ecf8e; color:#000; }
-
-/* ===== CONTENT ===== */
-.pf-main{
-  display:grid;
-  grid-template-columns: 1fr 260px;
-}
-
-.pf-content{ padding:20px; }
-
-.pf-headline{
-  font-size:28px;
-  margin-bottom:10px;
-}
-
-.pf-desc{
-  color:#888;
+/* CATALOG */
+.catalog{
+  display:flex;
+  gap:15px;
+  overflow-x:auto;
   margin-bottom:20px;
 }
 
-/* ===== INPUT ===== */
-.pf-topbar{
-  display:flex;
-  gap:10px;
-  margin-bottom:10px;
-}
-
-.pf-input{
-  flex:1;
-  padding:10px;
+.card{
+  min-width:220px;
   background:#111;
-  border:1px solid #333;
-  color:white;
-}
-
-.pf-btn{
-  padding:10px;
-  background:#f5e642;
-  border:none;
+  padding:15px;
   cursor:pointer;
+  border:1px solid #333;
+  transition:.2s;
 }
+.card:hover{transform:scale(1.05);}
+.card small{color:#777;}
 
-/* ===== EMBED ===== */
-.pf-embed{
+/* VIEWER */
+.viewer{
   height:400px;
   background:#000;
 }
 
-iframe{ width:100%; height:100%; border:none; }
-
-/* ===== SIDEBAR ===== */
-.pf-sidebar{
-  border-left:1px solid #2a2a2a;
-  padding:20px;
-  font-size:13px;
-}
-
-/* ===== MOBILE ===== */
-@media(max-width:800px){
-  .pf-main{ grid-template-columns:1fr; }
-}
+iframe{width:100%;height:100%;border:none;}
 </style>
 </head>
 
 <body>
 
-<div class="pf-panel">
+<div class="container">
 
-  <!-- HEADER -->
-  <div class="pf-header">
-    <div class="pf-logo">PEDA<span>FLASH</span></div>
-    <div id="date"></div>
-  </div>
+<div class="header">
+  <div class="logo">PEDA<span>FLASH</span></div>
+  <div id="date"></div>
+</div>
 
-  <!-- TABS -->
-  <div class="pf-tabs">
-    <div class="pf-tab ta" id="tab-a" onclick="setType('a')">⚡ Artefact</div>
-    <div class="pf-tab" id="tab-p" onclick="setType('p')">🎧 Podcast</div>
-    <div class="pf-tab" id="tab-r" onclick="setType('r')">📖 Ressource</div>
-    <div class="pf-tab" id="tab-pad" onclick="setType('pad')">🟩 Padlet</div>
-  </div>
+<div class="filters">
+  <div class="filter active" onclick="filterType('all')">Tout</div>
+  <div class="filter" onclick="filterType('artefact')">Artefact</div>
+  <div class="filter" onclick="filterType('podcast')">Podcast</div>
+  <div class="filter" onclick="filterType('ressource')">PDF</div>
+  <div class="filter" onclick="filterType('padlet')">Padlet</div>
+</div>
 
-  <div class="pf-main">
+<div class="catalog" id="catalog"></div>
 
-    <!-- CONTENT -->
-    <div class="pf-content">
+<h2 id="title"></h2>
+<p id="desc"></p>
 
-      <div class="pf-headline" id="headline">Chargement...</div>
-      <div class="pf-desc" id="desc"></div>
-
-      <div class="pf-topbar">
-        <input id="url" class="pf-input" placeholder="URL...">
-        <button class="pf-btn" onclick="loadContent()">Charger</button>
-      </div>
-
-      <div class="pf-embed" id="viewer"></div>
-
-    </div>
-
-    <!-- SIDEBAR -->
-    <div class="pf-sidebar">
-      <b>Pedaflash</b><br><br>
-      Ressource pédagogique automatisée<br>
-      Artefact / Podcast / PDF / Padlet
-    </div>
-
-  </div>
+<div class="viewer" id="viewer"></div>
 
 </div>
 
 <script>
 
-/* ===== DATE ===== */
+/* DATE */
 document.getElementById("date").innerText =
 new Date().toLocaleDateString("fr-FR");
 
-/* ===== TYPE ===== */
-let currentType = "a";
+/* DATA */
+let DATA = [];
 
-function setType(k){
-  currentType = k;
+/* LOAD JSON */
+fetch("./data/content.json")
+.then(r=>r.json())
+.then(d=>{
+  DATA = d.items;
+  renderCatalog(DATA);
+  loadItem(DATA[0]);
+});
 
-  document.querySelectorAll(".pf-tab").forEach(t=>{
-    t.className = "pf-tab";
+/* RENDER */
+function renderCatalog(items){
+  const cat = document.getElementById("catalog");
+  cat.innerHTML = "";
+
+  items.forEach(item=>{
+    const el = document.createElement("div");
+    el.className = "card";
+
+    el.innerHTML = `
+      <strong>${item.title}</strong><br>
+      <small>${item.type}</small>
+    `;
+
+    el.onclick = ()=>loadItem(item);
+
+    cat.appendChild(el);
   });
-
-  document.getElementById("tab-"+k).classList.add(
-    k==="a"?"ta":k==="p"?"tp":k==="r"?"tr":"tpad"
-  );
 }
 
-/* ===== LOAD ===== */
-function loadContent(){
+/* FILTER */
+function filterType(type){
+  document.querySelectorAll(".filter").forEach(f=>f.classList.remove("active"));
+  event.target.classList.add("active");
 
-  let url = document.getElementById("url").value.trim();
-  if(!url) return;
-
-  if(!url.startsWith("http")){
-    url = "https://" + url;
+  if(type==="all"){
+    renderCatalog(DATA);
+  } else {
+    renderCatalog(DATA.filter(i=>i.type===type));
   }
+}
+
+/* LOAD ITEM */
+function loadItem(item){
+
+  document.getElementById("title").innerText = item.title;
+  document.getElementById("desc").innerText = item.description;
 
   const viewer = document.getElementById("viewer");
   viewer.innerHTML = "";
 
-  // PODCAST
-  if(currentType === "p"){
+  let url = item.url;
+
+  if(item.type==="podcast"){
     viewer.innerHTML = `<audio controls style="width:100%"><source src="${url}"></audio>`;
     return;
   }
 
-  // GOOGLE DOC FIX
-  if(currentType === "r" && url.includes("docs.google.com")){
+  if(item.type==="ressource" && url.includes("docs.google.com")){
     url = url.replace("/edit","/preview");
   }
 
   viewer.innerHTML = `<iframe src="${url}"></iframe>`;
 }
-
-/* ===== AUTO JSON ===== */
-document.addEventListener("DOMContentLoaded", ()=>{
-
-  fetch("./data/content.json")
-    .then(r=>r.json())
-    .then(data=>{
-
-      if(!data.items || data.items.length===0) return;
-
-      const item = data.items[0];
-
-      document.getElementById("headline").innerText = item.title || "";
-      document.getElementById("desc").innerText = item.description || "";
-      document.getElementById("url").value = item.url || "";
-
-      // TYPE AUTO
-      const map = {
-        artefact:"a",
-        podcast:"p",
-        ressource:"r",
-        padlet:"pad"
-      };
-
-      setType(map[item.type] || "a");
-
-      loadContent();
-
-    })
-    .catch(err=>console.log(err));
-
-});
 
 </script>
 
