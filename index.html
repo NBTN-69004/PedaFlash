@@ -6,79 +6,40 @@
 <title>Pedaflash</title>
 
 <style>
-body{
-  margin:0;
-  background:#090909;
-  color:#f0ece0;
-  font-family:Arial;
-}
+body{margin:0;background:#090909;color:#fff;font-family:Arial;}
+.container{max-width:1200px;margin:auto;padding:20px;}
 
-.container{
-  max-width:1200px;
-  margin:auto;
-  padding:20px;
-}
-
-/* HEADER */
-.header{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:20px;
-}
-.logo{
-  font-size:28px;
-}
+.header{display:flex;justify-content:space-between;margin-bottom:20px;}
+.logo{font-size:28px;}
 .logo span{color:#f5e642;}
 
-/* FILTER */
-.filters{
-  display:flex;
-  gap:10px;
-  margin-bottom:20px;
-}
-.filter{
-  padding:8px 12px;
-  background:#222;
-  cursor:pointer;
-}
+.filters,.topbar{display:flex;gap:10px;margin-bottom:15px;}
+.filter{padding:8px 12px;background:#222;cursor:pointer;}
 .active{background:#f5e642;color:#000;}
 
-/* CATALOG */
-.catalog{
-  display:flex;
-  gap:15px;
-  overflow-x:auto;
-  margin-bottom:20px;
-}
-
-.card{
-  min-width:220px;
-  background:#111;
-  padding:15px;
-  cursor:pointer;
-  border:1px solid #333;
-  transition:.2s;
-}
+.catalog{display:flex;gap:15px;overflow-x:auto;margin-bottom:20px;}
+.card{min-width:220px;background:#111;padding:15px;cursor:pointer;border:1px solid #333;}
 .card:hover{transform:scale(1.05);}
-.card small{color:#777;}
 
-/* VIEWER */
-.viewer{
-  height:400px;
-  background:#000;
-}
-
+.viewer{height:400px;background:#000;margin-top:10px;}
 iframe{width:100%;height:100%;border:none;}
+
+button{cursor:pointer;padding:8px;background:#f5e642;border:none;}
+input{padding:8px;background:#111;border:1px solid #333;color:white;}
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
 <div class="header">
   <div class="logo">PEDA<span>FLASH</span></div>
   <div id="date"></div>
+</div>
+
+<div class="topbar">
+  <input id="search" placeholder="Rechercher...">
+  <button onclick="clearFav()">Reset favoris</button>
 </div>
 
 <div class="filters">
@@ -89,7 +50,14 @@ iframe{width:100%;height:100%;border:none;}
   <div class="filter" onclick="filterType('padlet')">Padlet</div>
 </div>
 
-<div class="catalog" id="catalog"></div>
+<h3>📚 Catalogue</h3>
+<div id="catalog" class="catalog"></div>
+
+<h3>⭐ Favoris</h3>
+<div id="fav" class="catalog"></div>
+
+<h3>🕘 Historique</h3>
+<div id="history" class="catalog"></div>
 
 <h2 id="title"></h2>
 <p id="desc"></p>
@@ -105,35 +73,68 @@ document.getElementById("date").innerText =
 new Date().toLocaleDateString("fr-FR");
 
 /* DATA */
-let DATA = [];
+let DATA=[];
+
+/* STORAGE */
+let fav = JSON.parse(localStorage.getItem("fav")||"[]");
+let hist = JSON.parse(localStorage.getItem("hist")||"[]");
 
 /* LOAD JSON */
 fetch("./data/content.json")
 .then(r=>r.json())
 .then(d=>{
-  DATA = d.items;
+  DATA=d.items;
   renderCatalog(DATA);
+  renderFav();
+  renderHist();
   loadItem(DATA[0]);
 });
 
 /* RENDER */
 function renderCatalog(items){
-  const cat = document.getElementById("catalog");
-  cat.innerHTML = "";
-
+  const cat=document.getElementById("catalog");
+  cat.innerHTML="";
   items.forEach(item=>{
-    const el = document.createElement("div");
-    el.className = "card";
-
-    el.innerHTML = `
-      <strong>${item.title}</strong><br>
-      <small>${item.type}</small>
-    `;
-
-    el.onclick = ()=>loadItem(item);
-
-    cat.appendChild(el);
+    cat.appendChild(createCard(item));
   });
+}
+
+/* CARD */
+function createCard(item){
+  const el=document.createElement("div");
+  el.className="card";
+
+  el.innerHTML=`
+    <strong>${item.title}</strong><br>
+    <small>${item.type}</small><br><br>
+    <button onclick="event.stopPropagation();toggleFav('${item.title}')">⭐</button>
+  `;
+
+  el.onclick=()=>loadItem(item);
+  return el;
+}
+
+/* LOAD ITEM */
+function loadItem(item){
+  document.getElementById("title").innerText=item.title;
+  document.getElementById("desc").innerText=item.description;
+
+  addHistory(item);
+
+  let url=item.url;
+  const viewer=document.getElementById("viewer");
+  viewer.innerHTML="";
+
+  if(item.type==="podcast"){
+    viewer.innerHTML=`<audio controls style="width:100%"><source src="${url}"></audio>`;
+    return;
+  }
+
+  if(item.type==="ressource" && url.includes("docs.google.com")){
+    url=url.replace("/edit","/preview");
+  }
+
+  viewer.innerHTML=`<iframe src="${url}"></iframe>`;
 }
 
 /* FILTER */
@@ -141,37 +142,55 @@ function filterType(type){
   document.querySelectorAll(".filter").forEach(f=>f.classList.remove("active"));
   event.target.classList.add("active");
 
-  if(type==="all"){
-    renderCatalog(DATA);
-  } else {
-    renderCatalog(DATA.filter(i=>i.type===type));
-  }
+  if(type==="all") renderCatalog(DATA);
+  else renderCatalog(DATA.filter(i=>i.type===type));
 }
 
-/* LOAD ITEM */
-function loadItem(item){
+/* SEARCH */
+document.getElementById("search").addEventListener("input", e=>{
+  const val=e.target.value.toLowerCase();
+  renderCatalog(DATA.filter(i=>i.title.toLowerCase().includes(val)));
+});
 
-  document.getElementById("title").innerText = item.title;
-  document.getElementById("desc").innerText = item.description;
+/* FAVORIS */
+function toggleFav(title){
+  if(fav.includes(title)) fav=fav.filter(f=>f!==title);
+  else fav.push(title);
 
-  const viewer = document.getElementById("viewer");
-  viewer.innerHTML = "";
+  localStorage.setItem("fav",JSON.stringify(fav));
+  renderFav();
+}
 
-  let url = item.url;
+function renderFav(){
+  const f=document.getElementById("fav");
+  f.innerHTML="";
+  DATA.filter(i=>fav.includes(i.title)).forEach(i=>{
+    f.appendChild(createCard(i));
+  });
+}
 
-  if(item.type==="podcast"){
-    viewer.innerHTML = `<audio controls style="width:100%"><source src="${url}"></audio>`;
-    return;
-  }
+function clearFav(){
+  localStorage.removeItem("fav");
+  fav=[];
+  renderFav();
+}
 
-  if(item.type==="ressource" && url.includes("docs.google.com")){
-    url = url.replace("/edit","/preview");
-  }
+/* HISTORIQUE */
+function addHistory(item){
+  hist.unshift(item);
+  hist=hist.slice(0,5);
+  localStorage.setItem("hist",JSON.stringify(hist));
+  renderHist();
+}
 
-  viewer.innerHTML = `<iframe src="${url}"></iframe>`;
+function renderHist(){
+  const h=document.getElementById("history");
+  h.innerHTML="";
+  hist.forEach(i=>{
+    h.appendChild(createCard(i));
+  });
 }
 
 </script>
-
 </body>
 </html>
