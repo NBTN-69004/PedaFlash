@@ -917,6 +917,19 @@ function seekAudio(e){ if(!audio.duration) return; var r=document.getElementById
 function setVolume(v){ audio.volume=v; }
 function cycleSpeed(){ si=(si+1)%speeds.length; audio.playbackRate=speeds[si]; document.getElementById('speedBtn').textContent=speeds[si]+'×'; }
 </script>
+document.addEventListener("DOMContentLoaded", () => {
+  fetch('data/latest.json')
+    .then(res => res.json())
+    .then(data => {
 
+      document.getElementById('headline').innerText = data.title;
+      document.getElementById('desc').innerText = data.description;
+
+      if (data.type === "artefact") {
+        document.getElementById('url-a').value = data.url;
+      }
+
+    });
+});
 </body>
 </html>
