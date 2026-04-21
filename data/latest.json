@@ -1,7 +1,22 @@
 {
-  "type": "artefact",
-  "title": "Simulation incendie",
-  "description": "Décision en intervention",
-  "url": "https://nbtn-69004.github.io/artefacts/artefact1/",
-  "date": "2026-04-21"
+  "items": [
+    {
+      "type": "artefact",
+      "title": "Simulation incendie",
+      "description": "Décision en intervention",
+      "url": "https://nbtn-69004.github.io/artefacts/artefact1/"
+    },
+    {
+      "type": "podcast",
+      "title": "Posture du formateur",
+      "description": "Réflexion pédagogique",
+      "url": "https://example.com/audio.mp3"
+    },
+    {
+      "type": "ressource",
+      "title": "Guide AFEST",
+      "description": "Méthodologie terrain",
+      "url": "https://example.com/doc.pdf"
+    }
+  ]
 }
