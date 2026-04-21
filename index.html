@@ -1098,5 +1098,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  fetch('./data/content.json')
+    .then(res => res.json())
+    .then(data => {
+
+      if (!data.items || data.items.length === 0) return;
+
+      const item = data.items[0];
+
+      // Texte
+      document.getElementById('headline').innerText = item.title || "Sans titre";
+      document.getElementById('desc').innerText = item.description || "";
+
+      // Artefact auto
+      if (item.type === "artefact") {
+        document.getElementById('url-a').value = item.url;
+        loadEmbed('a');
+      }
+
+    })
+    .catch(err => console.error("Erreur JSON :", err));
+
+});
+</script>
 </body>
 </html>
