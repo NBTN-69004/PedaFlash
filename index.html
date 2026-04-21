@@ -1064,6 +1064,39 @@ function loadItem(item) {
 
 }
 </script>
-  
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  fetch('./data/content.json')
+    .then(res => res.json())
+    .then(data => {
+
+      console.log("DATA:", data);
+
+      if (!data.items || data.items.length === 0) return;
+
+      const item = data.items[0];
+
+      // 🔥 TEXTE
+      const h = document.getElementById('headline');
+      const d = document.getElementById('desc');
+
+      if (h) h.innerText = item.title || "Sans titre";
+      if (d) d.innerText = item.description || "";
+
+      // 🔥 ARTEFACT AUTO
+      if (item.type === "artefact") {
+        const input = document.getElementById('url-a');
+        if (input) {
+          input.value = item.url;
+          loadEmbed('a'); // utilise TON code existant
+        }
+      }
+
+    })
+    .catch(err => console.error("Erreur JSON :", err));
+
+});
+</script>
 </body>
 </html>
