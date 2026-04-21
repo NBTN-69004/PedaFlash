@@ -988,20 +988,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </script>
 <div id="catalog" style="display:flex;gap:10px;overflow:auto;padding:10px;"></div>
-  <script>
-let DATA = [];
-
+  });
+  
+<script>
 document.addEventListener("DOMContentLoaded", () => {
 
   fetch('./data/content.json')
     .then(res => res.json())
     .then(data => {
-      DATA = data.items;
-      renderCatalog(DATA);
-      loadItem(DATA[0]); // auto premier
-    });
+
+      console.log("DATA:", data);
+
+      const item = data.items[0]; // 🔥 IMPORTANT
+
+      document.getElementById('headline').innerText = item.title;
+      document.getElementById('desc').innerText = item.description;
+
+      if (item.type === "artefact") {
+        document.getElementById('url-a').value = item.url;
+        loadEmbed('a');
+      }
+
+    })
+    .catch(err => console.error("Erreur JSON :", err));
 
 });
+</script>
 
 function renderCatalog(items) {
   const cat = document.getElementById('catalog');
