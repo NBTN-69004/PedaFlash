@@ -1,901 +1,221 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pedaflash</title>
-<style>
-/* RESET TOTAL — écrase tout CSS injecté par Jekyll / GitHub Pages */
-html, body, div, span, h1, h2, h3, p, a, input, button, iframe {
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  font: inherit !important;
-  vertical-align: baseline !important;
-}
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="theme-color" content="#090909">
 
-/* FOND NOIR FORCÉ — !important pour écraser Jekyll */
-html {
-background-color: #090909 !important;
-background: #090909 !important;
-min-height: 100% !important;
+<title>Pedaflash</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-background-color: #090909 !important;
-background: #090909 !important;
-color: #f0ece0 !important;
-font-family: ‘DM Sans’, ‘Segoe UI’, Helvetica, Arial, sans-serif !important;
-min-height: 100vh !important;
-display: flex !important;
-align-items: flex-start !important;
-justify-content: center !important;
-padding: 2rem !important;
+  background: #090909;
+  color: #f0ece0;
+  font-family: 'DM Sans', sans-serif;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
 }
 
-/* Grain de fond */
-body::before {
-content: ‘’ !important;
-position: fixed !important;
-top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 200 200’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.85’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.03’/%3E%3C/svg%3E”) !important;
-pointer-events: none !important;
-z-index: 0 !important;
-}
-
-@import url(‘https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap’);
-
-/* ── PANEL ── */
 .pf-panel {
-width: 100% !important;
-max-width: 900px !important;
-border: 1px solid #2a2a2a !important;
-background-color: #161616 !important;
-position: relative !important;
-z-index: 1 !important;
-padding: 0 !important;
-margin: 0 auto !important;
-animation: panelIn 0.45s ease both !important;
-}
-
-@keyframes panelIn {
-from { opacity: 0; transform: translateY(12px); }
-to   { opacity: 1; transform: translateY(0); }
+  max-width: 900px;
+  width: 100%;
+  background: #161616;
+  border: 1px solid #2a2a2a;
 }
 
 .pf-top-bar {
-display: block !important;
-height: 3px !important;
-background-color: #f5e642 !important;
-width: 100% !important;
-margin: 0 !important;
-padding: 0 !important;
-border: none !important;
+  height: 3px;
+  background: #f5e642;
 }
 
-/* ── HEADER ── */
 .pf-header {
-display: flex !important;
-align-items: stretch !important;
-border-bottom: 1px solid #2a2a2a !important;
-padding: 0 !important;
-margin: 0 !important;
+  display: flex;
+  border-bottom: 1px solid #2a2a2a;
 }
 
 .pf-logo {
-background-color: #1a1a1a !important;
-border-right: 1px solid #2a2a2a !important;
-padding: 1.1rem 1.5rem 1.1rem 1.8rem !important;
-display: flex !important;
-flex-direction: column !important;
-justify-content: center !important;
-flex-shrink: 0 !important;
-min-width: 190px !important;
-position: relative !important;
-overflow: hidden !important;
-}
-
-.pf-logo::before {
-content: ‘’ !important;
-position: absolute !important;
-left: 0 !important; top: 0 !important; bottom: 0 !important;
-width: 3px !important;
-background-color: #f5e642 !important;
-padding: 0 !important;
-border: none !important;
-}
-
-.pf-logo-eyebrow {
-font-family: ‘DM Mono’, ‘Courier New’, monospace !important;
-font-size: 0.5rem !important;
-letter-spacing: 0.22em !important;
-text-transform: uppercase !important;
-color: #555555 !important;
-margin-bottom: 0.1rem !important;
-display: block !important;
-padding: 0 !important;
+  padding: 1.5rem;
+  border-right: 1px solid #2a2a2a;
 }
 
 .pf-logo-title {
-font-family: ‘Bebas Neue’, ‘Arial Narrow’, Arial, sans-serif !important;
-font-size: 3rem !important;
-line-height: 0.93 !important;
-color: #f0ece0 !important;
-display: block !important;
-padding: 0 !important;
+  font-family: 'Bebas Neue';
+  font-size: 2.8rem;
 }
 
-.pf-logo-title .acc { color: #f5e642 !important; }
-
-.pf-logo-sub {
-font-family: ‘DM Mono’, ‘Courier New’, monospace !important;
-font-size: 0.46rem !important;
-letter-spacing: 0.16em !important;
-text-transform: uppercase !important;
-margin-top: 0.35rem !important;
-color: #444444 !important;
-display: block !important;
-padding: 0 !important;
+.acc {
+  color: #f5e642;
 }
 
 .pf-meta {
-flex: 1 !important;
-padding: 0.9rem 1.4rem !important;
-display: flex !important;
-flex-direction: column !important;
-justify-content: space-between !important;
+  padding: 1rem;
+  flex: 1;
 }
 
-.pf-ticker-row {
-display: flex !important;
-align-items: center !important;
-gap: 0.6rem !important;
-overflow: hidden !important;
-}
-
-.pf-ticker-label {
-font-family: ‘DM Mono’, monospace !important;
-font-size: 0.47rem !important;
-letter-spacing: 0.2em !important;
-text-transform: uppercase !important;
-background-color: #ff4d4d !important;
-color: #ffffff !important;
-padding: 0.15rem 0.4rem !important;
-flex-shrink: 0 !important;
-}
-
-.pf-ticker-text {
-font-size: 0.7rem !important;
-color: #666666 !important;
-font-style: italic !important;
-}
-
-.pf-date {
-font-family: ‘DM Mono’, monospace !important;
-font-size: 0.46rem !important;
-color: #444444 !important;
-letter-spacing: 0.1em !important;
-display: block !important;
-padding: 0 !important;
-}
-
-/* ── TABS ── */
 .pf-tabs {
-display: flex !important;
-border-bottom: 1px solid #2a2a2a !important;
-background-color: #111111 !important;
-flex-wrap: wrap !important;
-padding: 0 !important;
-margin: 0 !important;
+  display: flex;
+  background: #111;
 }
 
 .pf-tab {
-font-family: ‘DM Mono’, monospace !important;
-font-size: 0.52rem !important;
-letter-spacing: 0.14em !important;
-text-transform: uppercase !important;
-padding: 0.7rem 1.1rem !important;
-background: none !important;
-border: none !important;
-border-right: 1px solid #2a2a2a !important;
-color: #666666 !important;
-cursor: pointer !important;
-display: flex !important;
-align-items: center !important;
-gap: 0.4rem !important;
-margin: 0 !important;
+  flex: 1;
+  padding: 0.8rem;
+  cursor: pointer;
+  border-right: 1px solid #2a2a2a;
+  font-size: 0.7rem;
 }
 
-.pf-tab:last-child { border-right: none !important; }
-.pf-tab.ta { background-color: #f5e642 !important; color: #000000 !important; }
-.pf-tab.tp { background-color: #4daaff !important; color: #000000 !important; }
-.pf-tab.tr { background-color: #a855f7 !important; color: #ffffff !important; }
-.pf-tab.tpad { background-color: #3ecf8e !important; color: #000000 !important; }
-
-/* ── MAIN ── */
-.pf-main {
-display: grid !important;
-grid-template-columns: 1fr 250px !important;
-padding: 0 !important;
-margin: 0 !important;
+.pf-tab.active {
+  background: #f5e642;
+  color: #000;
 }
 
 .pf-content {
-border-right: 1px solid #2a2a2a !important;
-display: flex !important;
-flex-direction: column !important;
-padding: 0 !important;
+  padding: 1.5rem;
 }
-
-.pf-feature { padding: 1.6rem !important; }
-
-.pf-badge {
-display: inline-flex !important;
-align-items: center !important;
-gap: 0.35rem !important;
-font-family: ‘DM Mono’, monospace !important;
-font-size: 0.5rem !important;
-letter-spacing: 0.16em !important;
-text-transform: uppercase !important;
-border: 1px solid !important;
-padding: 0.22rem 0.55rem !important;
-margin-bottom: 0.8rem !important;
-}
-
-.ba { border-color: #f5e642 !important; color: #f5e642 !important; }
-.bp { border-color: #4daaff !important; color: #4daaff !important; }
-.br { border-color: #a855f7 !important; color: #a855f7 !important; }
-.bpad { border-color: #3ecf8e !important; color: #3ecf8e !important; }
 
 .pf-headline {
-font-family: ‘Bebas Neue’, ‘Arial Narrow’, Arial, sans-serif !important;
-font-size: 2.2rem !important;
-line-height: 1 !important;
-letter-spacing: 0.02em !important;
-margin-bottom: 0.8rem !important;
-color: #f0ece0 !important;
-display: block !important;
-padding: 0 !important;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
-
-.hla { color: #f5e642 !important; }
-.hlp { color: #4daaff !important; }
-.hlr { color: #a855f7 !important; }
-.hlpad { color: #3ecf8e !important; }
 
 .pf-desc {
-font-size: 0.76rem !important;
-line-height: 1.65 !important;
-color: #888888 !important;
-font-weight: 300 !important;
-display: block !important;
-padding: 0 !important;
-}
-
-/* ── ZONES ── */
-.pf-zone { display: none; flex-direction: column; }
-.pf-zone.on { display: flex !important; }
-
-.pf-topbar {
-display: flex !important;
-align-items: center !important;
-justify-content: space-between !important;
-padding: 0.5rem 1rem !important;
-border-top: 1px solid #2a2a2a !important;
-border-bottom: 1px solid #2a2a2a !important;
-background-color: #111111 !important;
-flex-wrap: wrap !important;
-gap: 0.5rem !important;
-margin: 0 !important;
-}
-
-.pf-zone-label {
-font-family: ‘DM Mono’, monospace !important;
-font-size: 0.46rem !important;
-letter-spacing: 0.18em !important;
-text-transform: uppercase !important;
-color: #666666 !important;
-display: flex !important;
-align-items: center !important;
-gap: 0.4rem !important;
-flex-shrink: 0 !important;
-padding: 0 !important;
-}
-
-.pf-dot {
-width: 6px !important; height: 6px !important;
-border-radius: 50% !important;
-animation: pulse 1.8s ease-in-out infinite !important;
-display: inline-block !important;
-padding: 0 !important;
-border: none !important;
-}
-.da { background-color: #f5e642 !important; }
-.dp { background-color: #4daaff !important; }
-.dr { background-color: #a855f7 !important; }
-.dpad { background-color: #3ecf8e !important; }
-
-@keyframes pulse {
-0%,100% { opacity: 1; }
-50%      { opacity: 0.3; }
+  color: #888;
+  margin-bottom: 1rem;
 }
 
 .pf-input {
-font-family: ‘DM Mono’, monospace !important;
-font-size: 0.5rem !important;
-background-color: #0e0e0e !important;
-border: 1px solid #2a2a2a !important;
-color: #cccccc !important;
-padding: 0.3rem 0.6rem !important;
-width: 250px !important;
-outline: none !important;
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  background: #0e0e0e;
+  border: 1px solid #2a2a2a;
+  color: #fff;
 }
 
 .pf-btn {
-font-family: ‘DM Mono’, monospace !important;
-font-size: 0.48rem !important;
-letter-spacing: 0.12em !important;
-text-transform: uppercase !important;
-border: none !important;
-padding: 0.32rem 0.85rem !important;
-cursor: pointer !important;
-margin: 0 !important;
+  padding: 0.5rem 1rem;
+  background: #f5e642;
+  border: none;
+  cursor: pointer;
 }
 
-.btna   { background-color: #f5e642 !important; color: #000000 !important; }
-.btnp   { background-color: #4daaff !important; color: #000000 !important; }
-.btnr   { background-color: #a855f7 !important; color: #ffffff !important; }
-.btnpad { background-color: #3ecf8e !important; color: #000000 !important; }
-
-/* ── EMBED ── */
 .pf-embed {
-position: relative !important;
-height: 380px !important;
-background-color: #0a0a0a !important;
-overflow: hidden !important;
-margin: 0 !important;
-padding: 0 !important;
+  height: 380px;
+  background: #000;
+  margin-top: 1rem;
 }
 
-.pf-embed iframe {
-width: 100% !important; height: 100% !important;
-border: none !important; display: block !important;
-margin: 0 !important; padding: 0 !important;
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
-.pf-ph {
-position: absolute !important; top:0 !important; left:0 !important; right:0 !important; bottom:0 !important;
-display: flex !important; flex-direction: column !important;
-align-items: center !important; justify-content: center !important;
-gap: 0.8rem !important; background-color: #0d0d0d !important;
-color: #666666 !important; padding: 1rem !important;
-}
-
-.pf-ph-icon { font-size: 2.5rem !important; opacity: 0.3 !important; display: block !important; padding: 0 !important; }
-
-.pf-ph-text {
-font-family: ‘DM Mono’, monospace !important;
-font-size: 0.52rem !important; letter-spacing: 0.12em !important;
-text-transform: uppercase !important; opacity: 0.4 !important;
-text-align: center !important; line-height: 1.9 !important;
-display: block !important; padding: 0 !important;
-}
-
-.pf-err {
-position: absolute !important; top:0 !important; left:0 !important; right:0 !important; bottom:0 !important;
-display: none; flex-direction: column !important;
-align-items: center !important; justify-content: center !important;
-gap: 0.7rem !important; background-color: #0d0d0d !important;
-text-align: center !important; padding: 2rem !important;
-}
-.pf-err.on { display: flex !important; }
-.pf-err-icon { font-size: 2rem !important; opacity: 0.5 !important; display: block !important; padding: 0 !important; }
-.pf-err-text {
-font-family: ‘DM Mono’, monospace !important;
-font-size: 0.5rem !important; letter-spacing: 0.1em !important;
-text-transform: uppercase !important; line-height: 2 !important; color: #777777 !important;
-display: block !important; padding: 0 !important;
-}
-.pf-err-text strong { color: #ff4d4d !important; }
-.pf-err-btn {
-font-family: ‘DM Mono’, monospace !important;
-font-size: 0.48rem !important; letter-spacing: 0.12em !important; text-transform: uppercase !important;
-background: none !important; border: 1px solid #ff4d4d !important; color: #ff4d4d !important;
-padding: 0.35rem 1rem !important; cursor: pointer !important; margin-top: 0.3rem !important;
-}
-
-/* ── PODCAST ── */
-.pf-podcast-wrap {
-border-top: 1px solid #2a2a2a !important;
-padding: 1.4rem !important;
-background-color: #111111 !important;
-}
-
-.pf-podcast-info {
-display: flex !important; align-items: flex-start !important;
-gap: 1rem !important; margin-bottom: 1.2rem !important;
-}
-
-.pf-podcast-thumb {
-width: 56px !important; height: 56px !important;
-background-color: #4daaff !important;
-display: flex !important; align-items: center !important; justify-content: center !important;
-font-size: 1.5rem !important; flex-shrink: 0 !important;
-border: none !important;
-}
-
-.pf-podcast-title {
-font-size: 0.88rem !important; font-weight: 500 !important;
-line-height: 1.3 !important; margin-bottom: 0.3rem !important;
-color: #f0ece0 !important; display: block !important; padding: 0 !important;
-}
-.pf-podcast-ep {
-font-family: ‘DM Mono’, monospace !important; font-size: 0.48rem !important;
-letter-spacing: 0.12em !important; color: #666666 !important;
-text-transform: uppercase !important; display: block !important; padding: 0 !important;
-}
-
-.pf-player {
-background-color: #0d0d0d !important; border: 1px solid #2a2a2a !important;
-padding: 1rem 1.2rem !important; margin-top: 1rem !important;
-}
-
-.pf-controls {
-display: flex !important; align-items: center !important;
-gap: 1rem !important; margin-bottom: 0.8rem !important;
-}
-
-.pf-play {
-width: 38px !important; height: 38px !important;
-background-color: #4daaff !important; border: none !important; cursor: pointer !important;
-display: flex !important; align-items: center !important; justify-content: center !important;
-font-size: 0.9rem !important; flex-shrink: 0 !important; color: #000000 !important;
-margin: 0 !important; padding: 0 !important;
-}
-
-.pf-time {
-font-family: ‘DM Mono’, monospace !important; font-size: 0.55rem !important;
-color: #666666 !important; flex-shrink: 0 !important; min-width: 80px !important;
-display: block !important; padding: 0 !important;
-}
-
-.pf-track {
-flex: 1 !important; height: 3px !important;
-background-color: #2a2a2a !important; cursor: pointer !important;
-position: relative !important; border: none !important;
-}
-
-.pf-fill {
-height: 100% !important; background-color: #4daaff !important;
-pointer-events: none !important; margin: 0 !important; padding: 0 !important; border: none !important;
-}
-
-.pf-vol-row {
-display: flex !important; align-items: center !important; gap: 0.6rem !important;
-}
-
-.pf-speed {
-font-family: ‘DM Mono’, monospace !important; font-size: 0.48rem !important;
-background-color: #1e1e1e !important; border: 1px solid #2a2a2a !important;
-color: #666666 !important; padding: 0.2rem 0.5rem !important;
-cursor: pointer !important; margin-left: auto !important;
-}
-
-.pf-note {
-margin-top: 0.8rem !important; font-family: ‘DM Mono’, monospace !important;
-font-size: 0.44rem !important; color: #444444 !important;
-line-height: 1.8 !important; display: block !important; padding: 0 !important;
-}
-
-/* ── SIDEBAR ── */
-.pf-sidebar {
-display: flex !important; flex-direction: column !important;
-padding: 0 !important; margin: 0 !important;
-}
-
-.pf-sb-section {
-padding: 1.1rem 1.3rem !important;
-border-bottom: 1px solid #2a2a2a !important;
-}
-.pf-sb-section:last-child { border-bottom: none !important; flex: 1 !important; }
-
-.pf-sb-label {
-font-family: ‘DM Mono’, monospace !important; font-size: 0.44rem !important;
-letter-spacing: 0.2em !important; text-transform: uppercase !important;
-color: #666666 !important; margin-bottom: 0.7rem !important;
-display: flex !important; align-items: center !important; gap: 0.4rem !important;
-padding: 0 !important;
-}
-.pf-sb-label::after {
-content: ‘’ !important; flex: 1 !important;
-height: 1px !important; background-color: #2a2a2a !important;
-display: block !important; padding: 0 !important; border: none !important;
-}
-
-.pf-stat {
-display: flex !important; align-items: baseline !important;
-justify-content: space-between !important;
-padding: 0.38rem 0 !important; border-bottom: 1px solid #1c1c1c !important;
-}
-.pf-stat:last-child { border-bottom: none !important; }
-.pf-stat-label { font-size: 0.65rem !important; color: #777777 !important; font-weight: 300 !important; }
-.pf-stat-val {
-font-family: ‘Bebas Neue’, ‘Arial Narrow’, sans-serif !important;
-font-size: 1.2rem !important; color: #f5e642 !important; line-height: 1 !important;
-display: block !important; padding: 0 !important;
-}
-
-.pf-quote {
-background-color: #0f0f0f !important;
-border-left: 2px solid #f5e642 !important;
-padding: 0.75rem 0.9rem !important; border-top: none !important; border-right: none !important; border-bottom: none !important;
-}
-.pf-quote-text { font-size: 0.68rem !important; font-style: italic !important; color: #aaaaaa !important; line-height: 1.55 !important; display: block !important; padding: 0 !important; }
-.pf-quote-auth { font-family: ‘DM Mono’, monospace !important; font-size: 0.44rem !important; letter-spacing: 0.1em !important; color: #555555 !important; margin-top: 0.4rem !important; text-transform: uppercase !important; display: block !important; padding: 0 !important; }
-
-/* ── CALENDRIER ÉDITABLE ── */
-.pf-cal {
-background-color: #0f0f0f !important; border: 1px solid #2a2a2a !important;
-padding: 0.85rem 0.9rem !important; position: relative !important;
-}
-.pf-cal-hint {
-position: absolute !important; top: 0.4rem !important; right: 0.5rem !important;
-font-family: ‘DM Mono’, monospace !important; font-size: 0.38rem !important;
-text-transform: uppercase !important; color: #f5e642 !important;
-opacity: 0 !important; pointer-events: none !important;
-transition: opacity 0.2s !important;
-padding: 0 !important; border: none !important; background: none !important;
-}
-.pf-cal:hover .pf-cal-hint { opacity: 1 !important; }
-
-.pf-cal-row {
-display: flex !important; align-items: center !important;
-gap: 0.4rem !important; margin-bottom: 0.4rem !important;
-}
-.pf-cal-icon { font-size: 0.85rem !important; flex-shrink: 0 !important; display: block !important; }
-.pf-cal-sublabel {
-font-family: ‘DM Mono’, monospace !important; font-size: 0.4rem !important;
-letter-spacing: 0.12em !important; text-transform: uppercase !important;
-color: #444444 !important; margin-bottom: 0.2rem !important; margin-top: 0.35rem !important;
-display: block !important; padding: 0 !important;
-}
-
-.pf-field {
-font-family: ‘DM Sans’, sans-serif !important;
-background: transparent !important; border: none !important; outline: none !important;
-color: #f0ece0 !important; width: 100% !important; padding: 1px 3px !important; cursor: text !important;
-margin: 0 !important;
-}
-.pf-field:focus { background-color: rgba(245,230,66,0.05) !important; border-bottom: 1px dashed #f5e642 !important; }
-.fd { font-weight: 700 !important; font-size: 0.72rem !important; color: #cccccc !important; }
-.ft { font-size: 0.72rem !important; color: #f5e642 !important; }
-.fs { font-size: 0.58rem !important; color: #555555 !important; margin-top: 0.1rem !important; }
-
-/* ── TAGS ── */
-.pf-tags { display: flex !important; flex-wrap: wrap !important; gap: 0.4rem !important; padding: 0 !important; }
-.pf-tag {
-font-family: ‘DM Mono’, monospace !important; font-size: 0.42rem !important;
-letter-spacing: 0.1em !important; padding: 0.18rem 0.45rem !important;
-border: 1px solid #2a2a2a !important; color: #666666 !important;
-text-transform: uppercase !important; cursor: pointer !important;
-background: none !important;
-}
-.pf-tag:hover { border-color: #f5e642 !important; color: #f5e642 !important; }
-
-/* ── FOOTER ── */
 .pf-footer {
-border-top: 1px solid #2a2a2a !important; padding: 0.65rem 1.6rem !important;
-display: flex !important; align-items: center !important;
-justify-content: space-between !important; background-color: #111111 !important;
-flex-wrap: wrap !important; gap: 0.5rem !important; margin: 0 !important;
+  padding: 1rem;
+  border-top: 1px solid #2a2a2a;
+  font-size: 0.7rem;
+  color: #666;
 }
-.pf-footer-left {
-font-family: ‘DM Mono’, monospace !important; font-size: 0.44rem !important;
-letter-spacing: 0.12em !important; color: #444444 !important; text-transform: uppercase !important;
-display: block !important; padding: 0 !important;
-}
-.pf-blink { animation: blink 1.4s step-end infinite !important; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 680px) {
-body { padding: 0 !important; }
-.pf-panel { border: none !important; }
-.pf-main { grid-template-columns: 1fr !important; }
-.pf-content { border-right: none !important; border-bottom: 1px solid #2a2a2a !important; }
-.pf-sidebar { flex-direction: row !important; flex-wrap: wrap !important; }
-.pf-sb-section { flex: 1 1 45% !important; border-right: 1px solid #2a2a2a !important; }
-.pf-input { width: 100% !important; }
-.pf-logo { min-width: 140px !important; }
-.pf-logo-title { font-size: 2.2rem !important; }
-}
 </style>
-
 </head>
+
 <body>
+
 <div class="pf-panel">
-  <div class="pf-top-bar"></div>
 
-  <div class="pf-header">
-    <div class="pf-logo">
-      <span class="pf-logo-eyebrow">Salon · Formation</span>
-      <span class="pf-logo-title">PEDA<span class="acc">FLASH</span></span>
-      <span class="pf-logo-sub">Ressources · Formateurs</span>
-    </div>
-    <div class="pf-meta">
-      <div class="pf-ticker-row">
-        <span class="pf-ticker-label">⚡ Flash</span>
-        <span class="pf-ticker-text" id="ticker">Nouvelle ressource disponible — consultez le contenu de la semaine.</span>
-      </div>
-      <span class="pf-date" id="dateDisplay"></span>
-    </div>
+<div class="pf-top-bar"></div>
+
+<div class="pf-header">
+  <div class="pf-logo">
+    <div class="pf-logo-title">PEDA<span class="acc">FLASH</span></div>
   </div>
-
-  <div class="pf-tabs">
-    <button class="pf-tab ta" id="tab-a" onclick="setType('a')">⚡ Artefact</button>
-    <button class="pf-tab"    id="tab-p" onclick="setType('p')">🎧 Podcast</button>
-    <button class="pf-tab"    id="tab-r" onclick="setType('r')">📖 Ressource</button>
-    <button class="pf-tab"    id="tab-pad" onclick="setType('pad')">🟩 Padlet</button>
+  <div class="pf-meta">
+    <div id="date"></div>
   </div>
+</div>
 
-  <div class="pf-main">
-    <div class="pf-content">
+<div class="pf-tabs">
+  <div class="pf-tab active" onclick="setType('artefact')">⚡ Artefact</div>
+  <div class="pf-tab" onclick="setType('podcast')">🎧 Podcast</div>
+  <div class="pf-tab" onclick="setType('ressource')">📖 Ressource</div>
+</div>
 
-```
-  <div class="pf-feature">
-    <div class="pf-badge ba" id="badge">⚡ Artefact interactif</div>
-    <span class="pf-headline" id="headline">La ressource qui va <span class="hla" id="hl">changer</span> votre séance.</span>
-    <span class="pf-desc" id="desc">Collez l'URL de votre artefact HTML dans le champ ci-dessous.</span>
-  </div>
+<div class="pf-content">
 
-  <!-- ARTEFACT -->
-  <div class="pf-zone on" id="zone-a">
-    <div class="pf-topbar">
-      <div class="pf-zone-label"><span class="pf-dot da"></span>Artefact embarqué</div>
-      <input class="pf-input" id="url-a" type="url" placeholder="https://mon-artefact.replit.app" />
-      <button class="pf-btn btna" onclick="loadEmbed('a')">Charger ▶</button>
-    </div>
-    <div class="pf-embed" id="wrap-a">
-      <div class="pf-ph" id="ph-a">
-        <span class="pf-ph-icon">⚡</span>
-        <span class="pf-ph-text">Collez une URL<br>et cliquez sur Charger</span>
-      </div>
-      <div class="pf-err" id="err-a">
-        <span class="pf-err-icon">🚫</span>
-        <span class="pf-err-text"><strong>Ce site bloque l'intégration.</strong><br>Ouvrez-le dans un onglet :</span>
-        <button class="pf-err-btn" id="obtn-a">↗ Ouvrir dans un onglet</button>
-      </div>
-    </div>
-  </div>
+  <div class="pf-headline" id="title">Chargement...</div>
+  <div class="pf-desc" id="desc"></div>
 
-  <!-- PODCAST -->
-  <div class="pf-zone" id="zone-p">
-    <div class="pf-podcast-wrap">
-      <div class="pf-podcast-info">
-        <div class="pf-podcast-thumb">🎧</div>
-        <div>
-          <span class="pf-podcast-title" id="pod-title">Aucun fichier chargé</span>
-          <span class="pf-podcast-ep" id="pod-ep">Collez une URL · Pedaflash</span>
-        </div>
-      </div>
-      <div class="pf-topbar" style="border-top:none !important;">
-        <div class="pf-zone-label"><span class="pf-dot dp"></span>Fichier audio</div>
-        <input class="pf-input" id="url-p" type="url" placeholder="URL .mp3 / .ogg / .m4a" />
-        <button class="pf-btn btnp" onclick="loadPodcast()">Charger</button>
-      </div>
-      <div class="pf-player">
-        <audio id="audioEl"></audio>
-        <div class="pf-controls">
-          <button class="pf-play" id="playBtn" onclick="togglePlay()">▶</button>
-          <span class="pf-time" id="timeDisplay">0:00 / 0:00</span>
-          <div class="pf-track" id="progressTrack" onclick="seekAudio(event)">
-            <div class="pf-fill" id="progressFill" style="width:0%"></div>
-          </div>
-          <button class="pf-speed" id="speedBtn" onclick="cycleSpeed()">1×</button>
-        </div>
-        <div class="pf-vol-row">
-          <span style="font-size:0.7rem;color:#666;">🔈</span>
-          <input type="range" min="0" max="1" step="0.05" value="1" style="-webkit-appearance:none;width:80px;height:2px;background:#333;cursor:pointer;border:none;outline:none;" oninput="setVolume(this.value)">
-          <span style="font-family:'DM Mono',monospace;font-size:0.44rem;color:#666;margin-left:0.5rem;">Volume</span>
-        </div>
-      </div>
-      <span class="pf-note">ℹ️ Fonctionne avec tout fichier audio direct (mp3, ogg, m4a).</span>
-    </div>
-  </div>
+  <input class="pf-input" id="urlInput" placeholder="Colle une URL ici">
+  <button class="pf-btn" onclick="loadContent()">Charger</button>
 
-  <!-- RESSOURCE -->
-  <div class="pf-zone" id="zone-r">
-    <div class="pf-topbar">
-      <div class="pf-zone-label"><span class="pf-dot dr"></span>Document embarqué</div>
-      <input class="pf-input" id="url-r" type="url" placeholder="https://doc.google.com/… ou PDF" />
-      <button class="pf-btn btnr" onclick="loadRessource()">Afficher</button>
-    </div>
-    <div class="pf-embed" id="wrap-r">
-      <div class="pf-ph" id="ph-r">
-        <span class="pf-ph-icon">📖</span>
-        <span class="pf-ph-text">Collez l'URL de votre PDF<br>ou Google Doc<br>et cliquez sur Afficher</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- PADLET -->
-  <div class="pf-zone" id="zone-pad">
-    <div class="pf-topbar">
-      <div class="pf-zone-label"><span class="pf-dot dpad"></span>Padlet embarqué</div>
-      <input class="pf-input" id="url-pad" type="url" placeholder="https://padlet.com/utilisateur/nom" />
-      <button class="pf-btn btnpad" onclick="loadEmbed('pad')">Charger ▶</button>
-    </div>
-    <div class="pf-embed" id="wrap-pad">
-      <div class="pf-ph" id="ph-pad">
-        <span class="pf-ph-icon">🟩</span>
-        <span class="pf-ph-text">Collez l'URL de votre Padlet<br>et cliquez sur Charger</span>
-      </div>
-      <div class="pf-err" id="err-pad">
-        <span class="pf-err-icon">🚫</span>
-        <span class="pf-err-text"><strong>Padlet non accessible.</strong><br>Vérifiez qu'il est public :</span>
-        <button class="pf-err-btn" id="obtn-pad">↗ Ouvrir dans un onglet</button>
-      </div>
-    </div>
-  </div>
+  <div class="pf-embed" id="embed"></div>
 
 </div>
 
-<!-- SIDEBAR -->
-<div class="pf-sidebar">
-  <div class="pf-sb-section">
-    <div class="pf-sb-label">Semaine</div>
-    <div class="pf-stat"><span class="pf-stat-label">Ressources</span><span class="pf-stat-val">3</span></div>
-    <div class="pf-stat"><span class="pf-stat-label">Durée totale</span><span class="pf-stat-val">20<span style="font-size:0.65rem;color:#555;font-family:'DM Mono',monospace;"> MIN</span></span></div>
-    <div class="pf-stat"><span class="pf-stat-label">Niveau</span><span class="pf-stat-val" style="font-size:0.75rem;font-family:'DM Mono',monospace;">INTER</span></div>
-  </div>
-
-  <div class="pf-sb-section">
-    <div class="pf-sb-label">Citation</div>
-    <div class="pf-quote">
-      <span class="pf-quote-text">« Enseigner, c'est apprendre deux fois. »</span>
-      <span class="pf-quote-auth">— Joseph Joubert</span>
-    </div>
-  </div>
-
-  <div class="pf-sb-section">
-    <div class="pf-sb-label">Prochain flash</div>
-    <div class="pf-cal">
-      <span class="pf-cal-hint">✏ éditer</span>
-      <div class="pf-cal-row">
-        <span class="pf-cal-icon">📅</span>
-        <input class="pf-field fd" type="text" value="Lundi prochain" />
-      </div>
-      <span class="pf-cal-sublabel">Thème</span>
-      <input class="pf-field ft" type="text" value="Évaluation formative" />
-      <span class="pf-cal-sublabel">Format</span>
-      <input class="pf-field fs" type="text" value="Artefact + fiche mémo PDF" />
-    </div>
-  </div>
-
-  <div class="pf-sb-section">
-    <div class="pf-sb-label">Tags</div>
-    <div class="pf-tags">
-      <span class="pf-tag">#bloom</span><span class="pf-tag">#AFEST</span>
-      <span class="pf-tag">#eval</span><span class="pf-tag">#neuro</span>
-      <span class="pf-tag">#ADDIE</span><span class="pf-tag">#outils</span>
-    </div>
-  </div>
+<div class="pf-footer">
+  Pedaflash · Formation · Nicolas Narbonnet
 </div>
-```
 
-  </div>
-
-  <div class="pf-footer">
-    <span class="pf-footer-left"><span class="pf-blink">■</span> Pedaflash · <span id="footerDate"></span></span>
-    <div class="pf-tags">
-      <span class="pf-tag">#ingénierie</span>
-      <span class="pf-tag">#formation</span>
-      <span class="pf-tag">#formateurs</span>
-    </div>
-  </div>
 </div>
 
 <script>
-var now = new Date();
-var ds = now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-document.getElementById('dateDisplay').textContent = ds.charAt(0).toUpperCase()+ds.slice(1);
-document.getElementById('footerDate').textContent = now.toLocaleDateString('fr-FR');
 
-var tickers = [
-  "Nouvelle ressource disponible — consultez le contenu de la semaine.",
-  "⚡ Pedaflash · La formation courte qui fait la différence.",
-  "Un formateur qui apprend, c'est un formateur qui performe.",
-  "Artefact de la semaine — chargez-le directement ici.",
-];
-var ti = 0;
-setInterval(function(){ ti=(ti+1)%tickers.length; document.getElementById('ticker').textContent=tickers[ti]; }, 4000);
+// DATE
+const now = new Date();
+document.getElementById('date').innerText =
+  now.toLocaleDateString('fr-FR');
 
-var cfg = {
-  a:   { badge:'⚡ Artefact interactif', bc:'ba',   h:"La ressource qui va ", hl:'changer',      hc:'hla', t:' votre séance.',  d:"Collez l'URL de votre artefact HTML (Replit, GitHub Pages, Claude Artifacts…)", ta:'ta' },
-  p:   { badge:'🎧 Podcast',            bc:'bp',   h:'Écoutez, ',            hl:'réfléchissez', hc:'hlp', t:', progressez.',    d:"Collez l'URL directe d'un fichier audio (.mp3, .ogg, .m4a).", ta:'tp' },
-  r:   { badge:'📖 Ressource',          bc:'br',   h:'Une lecture qui ',     hl:'nourrit',      hc:'hlr', t:' la pratique.',   d:"Collez l'URL d'un PDF ou d'un Google Doc public.", ta:'tr' },
-  pad: { badge:'🟩 Padlet',             bc:'bpad', h:'Collaborez, ',         hl:'partagez',     hc:'hlpad', t:', construisez.', d:"Collez l'URL de votre Padlet public.", ta:'tpad' },
-};
+// TYPE
+let currentType = "artefact";
 
-function setType(k) {
-  var t = cfg[k];
-  var b = document.getElementById('badge');
-  b.textContent = t.badge; b.className = 'pf-badge '+t.bc;
-  document.getElementById('headline').innerHTML = t.h+'<span class="'+t.hc+'" id="hl">'+t.hl+'</span>'+t.t;
-  document.getElementById('desc').textContent = t.d;
-  var keys = ['a','p','r','pad'];
-  for (var i=0;i<keys.length;i++) {
-    document.getElementById('zone-'+keys[i]).classList.remove('on');
-    document.getElementById('tab-'+keys[i]).className = 'pf-tab';
+function setType(type) {
+  currentType = type;
+  document.querySelectorAll('.pf-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// LOAD CONTENT
+function loadContent() {
+  let url = document.getElementById('urlInput').value;
+
+  if (!url.startsWith('http')) {
+    url = "https://" + url;
   }
-  document.getElementById('zone-'+k).classList.add('on');
-  document.getElementById('tab-'+k).className = 'pf-tab '+t.ta;
-}
 
-function loadEmbed(k) {
-  var url = document.getElementById('url-'+k).value.trim();
-  if (!url) return;
-  if (url.indexOf('http') !== 0) url = 'https://'+url;
-  var wrap=document.getElementById('wrap-'+k);
-  var ph=document.getElementById('ph-'+k);
-  var err=document.getElementById('err-'+k);
-  var btn=document.getElementById('obtn-'+k);
-  ph.style.display='none';
-  if(err) err.classList.remove('on');
-  if(btn) btn.onclick = function(){ window.open(url,'_blank'); };
-  var old=wrap.querySelector('iframe');
-  if(old) old.parentNode.removeChild(old);
-  var fr=document.createElement('iframe');
-  fr.setAttribute('allowfullscreen','');
-  fr.style.cssText='width:100%;height:380px;border:none;display:block;';
-  var loaded=false;
-  var to=setTimeout(function(){ if(!loaded){ fr.style.display='none'; if(err) err.classList.add('on'); } },8000);
-  fr.onload=function(){
-    loaded=true; clearTimeout(to);
-    try{ var l=fr.contentWindow.location.href; if(l==='about:blank'){ fr.style.display='none'; if(err) err.classList.add('on'); } }
-    catch(e){ fr.style.display='block'; if(err) err.classList.remove('on'); }
-  };
-  fr.onerror=function(){ clearTimeout(to); fr.style.display='none'; if(err) err.classList.add('on'); };
-  fr.src=url; wrap.appendChild(fr);
-}
+  const embed = document.getElementById('embed');
 
-function loadRessource() {
-  var url=document.getElementById('url-r').value.trim(); if(!url) return;
-  if(url.indexOf('docs.google.com')!==-1&&url.indexOf('/preview')===-1){
-    url=url.replace('/edit','/preview').replace('/view','/preview');
-    if(url.indexOf('/preview')===-1) url+='/preview';
+  if (currentType === "podcast") {
+    embed.innerHTML = `<audio controls style="width:100%"><source src="${url}"></audio>`;
+  } else {
+    embed.innerHTML = `<iframe src="${url}"></iframe>`;
   }
-  var wrap=document.getElementById('wrap-r');
-  document.getElementById('ph-r').style.display='none';
-  var old=wrap.querySelector('iframe'); if(old) old.parentNode.removeChild(old);
-  var fr=document.createElement('iframe');
-  fr.src=url; fr.style.cssText='width:100%;height:380px;border:none;display:block;';
-  wrap.appendChild(fr);
 }
 
-var audio=document.getElementById('audioEl');
-var speeds=[1,1.25,1.5,2]; var si=0; var playing=false;
+// AUTO LOAD JSON
+fetch('data/latest.json')
+.then(res => res.json())
+.then(data => {
 
-function loadPodcast(){
-  var url=document.getElementById('url-p').value.trim(); if(!url) return;
-  audio.src=url; audio.load(); playing=false;
-  document.getElementById('playBtn').textContent='▶';
-  document.getElementById('timeDisplay').textContent='0:00 / 0:00';
-  document.getElementById('progressFill').style.width='0%';
-  try{ var parts=new URL(url).pathname.split('/').filter(Boolean); var n=decodeURIComponent(parts[parts.length-1]||'audio').replace(/\.[^.]+$/,'').replace(/[-_]/g,' '); document.getElementById('pod-title').textContent=n||'Épisode chargé'; }
-  catch(e){ document.getElementById('pod-title').textContent='Épisode chargé'; }
-  document.getElementById('pod-ep').textContent='Fichier audio · Pedaflash';
-}
+  document.getElementById('title').innerText = data.title;
+  document.getElementById('desc').innerText = data.description;
+  document.getElementById('urlInput').value = data.url;
 
-function togglePlay(){ if(!audio.src) return; if(playing){ audio.pause(); document.getElementById('playBtn').textContent='▶'; } else { audio.play(); document.getElementById('playBtn').textContent='⏸'; } playing=!playing; }
-function fmt(s){ s=Math.floor(s); return Math.floor(s/60)+':'+('0'+s%60).slice(-2); }
-audio.addEventListener('timeupdate',function(){ if(!audio.duration) return; document.getElementById('progressFill').style.width=(audio.currentTime/audio.duration*100)+'%'; document.getElementById('timeDisplay').textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration); });
-audio.addEventListener('ended',function(){ playing=false; document.getElementById('playBtn').textContent='▶'; });
-function seekAudio(e){ if(!audio.duration) return; var r=document.getElementById('progressTrack').getBoundingClientRect(); audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration; }
-function setVolume(v){ audio.volume=v; }
-function cycleSpeed(){ si=(si+1)%speeds.length; audio.playbackRate=speeds[si]; document.getElementById('speedBtn').textContent=speeds[si]+'×'; }
+});
+
 </script>
 
 </body>
