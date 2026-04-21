@@ -1,10 +1,6 @@
 {
-  "items": [
-    {
-      "type": "artefact",
-      "title": "Simulation incendie",
-      "description": "Décision en intervention",
-      "url": "https://nbtn-69004.github.io/artefacts/artefact1/"
-    }
-  ]
+  "type": "artefact",
+  "title": "...",
+  "description": "...",
+  "url": "..."
 }
